@@ -9,10 +9,11 @@
   "author": "Alejandro Guajardo",
   "license": "ISC",
   "dependencies": {
-    "discord.js": "^14.15.3",
+    "discord.js": "^14.16.2",
     "franc": "^6.2.0",
     "franc-min": "^6.2.0",
     "node-fetch": "^3.3.2",
+    "sequelize": "^6.37.3",
     "sqlite3": "^5.1.7"
   },
   "devDependencies": {

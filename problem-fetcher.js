@@ -1,5 +1,5 @@
 //
-const { getArrayPossibleContests } = require('./possibleContests.js');
+const { getArrayPossibleContests } = require('./possible-contests.js');
 
 function getRating(ratio) {
 	/* Expected behavior:
