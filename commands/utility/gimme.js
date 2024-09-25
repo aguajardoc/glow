@@ -1,4 +1,4 @@
-const { fetchContest } = require('../../problemFetcher');
+const { fetchContest } = require('../../command_helpers/problem-fetcher');
 const { SlashCommandBuilder } = require('discord.js');
 const { EmbedBuilder } = require('discord.js');
 
