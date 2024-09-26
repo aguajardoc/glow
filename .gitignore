@@ -1,7 +1,7 @@
 node_modules
 .env
 config.json
-ping.js
+commands/utility/ping.js
 server.js
 user.js
 array.txt
