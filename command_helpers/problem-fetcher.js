@@ -92,8 +92,9 @@ async function fetchContest(difficulty) {
     let contestId;
     let contestURL;
 
-	// Break out if it fails five consecutive calls.
+	// Break out if it fails a number of consecutive calls.
 	let communicationAttempts = 0;
+	const MAXAPICALLS = 3;
 
     while (!validProblemFound) {
         contestId = possibleContests[Math.floor(Math.random() * possibleContests.length)];
@@ -106,7 +107,7 @@ async function fetchContest(difficulty) {
 				communicationAttempts++;
 
 				// Return -1 as an indicator for API failure.
-				if (communicationAttempts >= 5) {
+				if (communicationAttempts >= MAXAPICALLS) {
 					return -1;
 				}
                 continue;
