@@ -2,7 +2,7 @@ const { fetchContest } = require('../../command_helpers/problem-fetcher');
 const { SlashCommandBuilder } = require('discord.js');
 const { EmbedBuilder } = require('discord.js');
 
-async function gimmeInteraction(difficulty) {
+async function gimmeInteraction(difficulty, interaction) {
 	const problemData = await fetchContest(difficulty);
 
 	// Create embed based on found problem.
@@ -42,8 +42,7 @@ module.exports = {
 		await interaction.deferReply();
 		// Find and send a problem based on difficulty.
 		const difficulty = interaction.options.getInteger('difficulty');
-		gimmeInteraction(difficulty);
+		gimmeInteraction(difficulty, interaction);
 	},
+	gimmeInteraction,
 };
-
-module.exports = { gimmeInteraction };

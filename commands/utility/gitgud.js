@@ -1,7 +1,7 @@
 // Like gimme, but with connection to database to track:
 // 1. If the user has an ongoing problem to solve
 // 2. What problems has the user solved, with their respective point counts
-const { gimmeInteraction } = require('/gimme.js');
+const { gimmeInteraction } = require('./gimme.js');
 const { SlashCommandBuilder } = require('discord.js');
 
 module.exports = {
@@ -33,7 +33,7 @@ module.exports = {
         else {
             // Find a problem based on difficulty and send embed to user.
             const difficulty = interaction.options.getInteger('difficulty');
-            gimmeInteraction(difficulty);
+            gimmeInteraction(difficulty, interaction);
 
             // TODO: Save relevant data in database.
                 // User data
