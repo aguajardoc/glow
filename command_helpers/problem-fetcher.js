@@ -1,7 +1,7 @@
-//
 const { getArrayPossibleContests } = require('./possible-contests.js');
 
-function getRating(ratio) {
+function getDifficulty(ratio) {
+	// Get a problems difficulty rating based on percentage of users who have solved it.
 	/* Expected behavior:
 	
 	Percent solved | Difficulty
@@ -57,9 +57,9 @@ function findProblem(contestProblemData, userDifficulty) {
 	let difficultyMatches = new Array();
 	for (let i = 0; i < problemCount; i++) {
 		rateSolved[i] = solved[i] / participantCount;
-		difficultyRatings[i] = getRating(rateSolved[i]);
+		difficultyRatings[i] = getDifficulty(rateSolved[i]);
 		
-		if (getRating(rateSolved[i]) === userDifficulty) {
+		if (getDifficulty(rateSolved[i]) === userDifficulty) {
 			difficultyMatches.push(i);
 		}
 	}
