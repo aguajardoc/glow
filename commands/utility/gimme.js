@@ -1,42 +1,36 @@
 const { fetchContest } = require('../../command_helpers/problem-fetcher');
+const { errorMessage } = require('../../command_helpers/api-error');
 const { SlashCommandBuilder } = require('discord.js');
-const { EmbedBuilder } = require('discord.js');
 
 async function gimmeInteraction(difficulty, interaction) {
 	const problemData = await fetchContest(difficulty);
 
+	// If -1 is returned, an error with the Codeforces API has occurred; inform user.
 	if (problemData === -1) {
-		const errorEmbed = {
-			color: 0xffbf00,
-			description: 'Codeforces API error.'
-		}
-
-		await interaction.editReply({
-			embeds: [errorEmbed]
-		})
+		errorMessage(interaction);
+		return;
+	}
+	
+	// Create embed based on found problem.
+	const problemEmbed = {
+		color: 0x1e1e22,
+		title: `${problemData.chosenProblemLetter}. ${problemData.chosenProblemName}`,
+		url: `https://codeforces.com/gym/${problemData.contestId}/problem/${problemData.chosenProblemLetter}`,
+		description: problemData.contestName,
+		fields: [
+			{
+				name: 'Rating',
+				value: difficulty,
+			},
+		]
 	}
 
-	else{
-		// Create embed based on found problem.
-		const problemEmbed = {
-			color: 0x1e1e22,
-			title: `${problemData.chosenProblemLetter}. ${problemData.chosenProblemName}`,
-			url: `https://codeforces.com/gym/${problemData.contestId}/problem/${problemData.chosenProblemLetter}`,
-			description: problemData.contestName,
-			fields: [
-				{
-					name: 'Rating',
-					value: difficulty,
-				},
-			]
-		}
-
-		// Send it.
-		await interaction.editReply({
-			content: `Challenge problem for ${interaction.user.username}`,
-			embeds: [problemEmbed]
-		});
-	}	
+	// Send it.
+	await interaction.editReply({
+		content: `Challenge problem for ${interaction.user.username}`,
+		embeds: [problemEmbed]
+	});
+	
 }
 
 module.exports = {
