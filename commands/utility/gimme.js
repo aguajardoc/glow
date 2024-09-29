@@ -5,25 +5,38 @@ const { EmbedBuilder } = require('discord.js');
 async function gimmeInteraction(difficulty, interaction) {
 	const problemData = await fetchContest(difficulty);
 
-	// Create embed based on found problem.
-	const problemEmbed = {
-		color: 0x1e1e22,
-		title: `${problemData.chosenProblemLetter}. ${problemData.chosenProblemName}`,
-		url: `https://codeforces.com/gym/${problemData.contestId}/problem/${problemData.chosenProblemLetter}`,
-		description: problemData.contestName,
-		fields: [
-			{
-				name: 'Rating',
-				value: difficulty,
-			},
-		]
+	if (problemData === -1) {
+		const errorEmbed = {
+			color: 0xffbf00,
+			description: 'Codeforces API error.'
+		}
+
+		await interaction.editReply({
+			embeds: [errorEmbed]
+		})
 	}
 
-	// Send it.
-	await interaction.editReply({
-		content: `Challenge problem for ${interaction.user.username}`,
-		embeds: [problemEmbed]
-	});
+	else{
+		// Create embed based on found problem.
+		const problemEmbed = {
+			color: 0x1e1e22,
+			title: `${problemData.chosenProblemLetter}. ${problemData.chosenProblemName}`,
+			url: `https://codeforces.com/gym/${problemData.contestId}/problem/${problemData.chosenProblemLetter}`,
+			description: problemData.contestName,
+			fields: [
+				{
+					name: 'Rating',
+					value: difficulty,
+				},
+			]
+		}
+
+		// Send it.
+		await interaction.editReply({
+			content: `Challenge problem for ${interaction.user.username}`,
+			embeds: [problemEmbed]
+		});
+	}	
 }
 
 module.exports = {

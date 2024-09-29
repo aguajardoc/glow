@@ -92,6 +92,9 @@ async function fetchContest(difficulty) {
     let contestId;
     let contestURL;
 
+	// Break out if it fails five consecutive calls.
+	let communicationAttempts = 0;
+
     while (!validProblemFound) {
         contestId = possibleContests[Math.floor(Math.random() * possibleContests.length)];
         contestURL = `https://codeforces.com/api/contest.standings?contestId=${contestId}&showUnofficial=true`;
@@ -100,6 +103,12 @@ async function fetchContest(difficulty) {
             const response = await fetch(contestURL);
             if (!response.ok) {
                 console.log(`Failed to fetch contest data for ID: ${contestId}`);
+				communicationAttempts++;
+
+				// Return -1 as an indicator for API failure.
+				if (communicationAttempts >= 5) {
+					return -1;
+				}
                 continue;
             }
 
