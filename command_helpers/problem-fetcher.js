@@ -1,3 +1,4 @@
+// Fetches a problem that matches a given difficulty through Codeforces's API.
 const { getArrayPossibleContests } = require('./possible-contests.js');
 
 function getDifficulty(ratio) {
@@ -94,7 +95,7 @@ async function fetchContest(difficulty) {
 
 	// Break out if it fails a number of consecutive calls.
 	let communicationAttempts = 0;
-	const MAXAPICALLS = 3;
+	const MAX_API_CALLS = 3;
 
     while (!validProblemFound) {
         contestId = possibleContests[Math.floor(Math.random() * possibleContests.length)];
@@ -107,7 +108,7 @@ async function fetchContest(difficulty) {
 				communicationAttempts++;
 
 				// Return -1 as an indicator for API failure.
-				if (communicationAttempts >= MAXAPICALLS) {
+				if (communicationAttempts >= MAX_API_CALLS) {
 					return -1;
 				}
                 continue;

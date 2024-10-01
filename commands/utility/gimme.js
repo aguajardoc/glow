@@ -1,3 +1,5 @@
+// Finds a random problem based on a given difficulty. This is a "tamer" version of gitgud: there is no compromise
+// between the problem and the user, and thus the user needn't complete the given problem to request a new one.
 const { fetchContest } = require('../../command_helpers/problem-fetcher');
 const { errorMessage } = require('../../command_helpers/api-error');
 const { SlashCommandBuilder } = require('discord.js');

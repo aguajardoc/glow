@@ -7,7 +7,7 @@
     // help
     // gitgudders
     // ladder
-// Commands to NOT add (for general testing):
+// Commands to NOT add (as these are for general testing):
     // ping
     // server
     // user

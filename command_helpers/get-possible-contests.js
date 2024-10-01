@@ -1,3 +1,9 @@
+// Searches through all Codeforces Gyms in search of three conditions:
+// 1. The contest is of type "ICPC".
+// 2. The contest is of kind "Official ICPC Contest".
+// 3. It's in English.
+// The Codeforces API holds information regarding the first two points, but the third one is somewhat solved through
+// Franc's language detection capabilities. It's not perfect, but it's a good solution
 import fetch from 'node-fetch';
 import fs from 'node:fs';
 import path from 'node:path';
