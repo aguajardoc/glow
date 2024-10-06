@@ -92,7 +92,7 @@ async function getPossibleContests() {
 
     // Convert the array to a string through JSON before writing to file.
     const content = JSON.stringify(possibleContests);
-    const filePath = path.resolve(process.env.HOME || process.env.USERPROFILE, 'Documents/Projects/glow-bot/glow/array.txt');
+    const filePath = path.resolve(process.env.HOME || process.env.USERPROFILE, 'Documents/Projects/glow-bot/glow/database/array.txt');
 
     // Write the file.
     fs.writeFile(filePath, content, (err) => {
