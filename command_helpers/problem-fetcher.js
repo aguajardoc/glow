@@ -106,12 +106,6 @@ async function fetchContest(difficulty) {
             if (!response.ok) {
                 console.log(`Failed to fetch contest data for ID: ${contestId}`);
 				communicationAttempts++;
-
-				// Return -1 as an indicator for API failure.
-				if (communicationAttempts >= MAX_API_CALLS) {
-					return -1;
-				}
-                continue;
             }
 
             const data = await response.json();
@@ -126,7 +120,14 @@ async function fetchContest(difficulty) {
         } 
         catch (error) {
             console.error('Error:', error);
+			communicationAttempts++;
         }
+
+		// Return -1 as an indicator for API failure if too many failed communication attempts have occurred.
+		if (communicationAttempts >= MAX_API_CALLS) {
+			return -1;
+		}
+		continue;
     }
 
     return problemData;
