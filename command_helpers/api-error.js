@@ -3,7 +3,7 @@ async function errorMessage(interaction) {
     const errorEmbed = {
         color: 0xffbf00,
         title: 'Codeforces API error',
-        description: 'This is neither your fault nor ours. Please wait some time, then try again.'
+        description: 'This is neither your fault nor ours. Please wait some time for Codeforces\' servers to come back, then try again.'
     }
     
     // Send this embed.
