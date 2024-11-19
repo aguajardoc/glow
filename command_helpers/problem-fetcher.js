@@ -86,19 +86,25 @@ async function fetchContest(difficulty) {
 
     // Fetch the possible contest IDs.
     const possibleContests = getArrayPossibleContests();
+	console.log(possibleContests);
 
     // Loop while we have not found a suitable problem.
     let validProblemFound = false;
     let problemData;
     let contestId;
     let contestURL;
+	let arrayIdx;
 
 	// Break out if it fails a number of consecutive calls.
 	let communicationAttempts = 0;
 	const MAX_API_CALLS = 3;
 
     while (!validProblemFound) {
-        contestId = possibleContests[Math.floor(Math.random() * possibleContests.length)];
+		arrayIdx = Math.floor(Math.random() * possibleContests.length);
+        contestId = possibleContests[arrayIdx];
+		console.log(contestId);
+		console.log(arrayIdx);
+		console.log(possibleContests.length);
         contestURL = `https://codeforces.com/api/contest.standings?contestId=${contestId}&showUnofficial=true`;
 
         try {
