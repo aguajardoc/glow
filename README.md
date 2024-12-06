@@ -12,7 +12,7 @@ As of now, one of the biggest hubs for past ICPC problemsets is Codeforces, by w
 ## Rating System
 Currently, problems are classified in one of ten levels, based on the following ratio:
 
-$$ \frac{\text{# of users who solved the problem}}{\text{# of users who participated in the contest}} $$
+$$ \frac{\text{Number of users who solved the problem}}{\text{Number of users who participated in the contest}} $$
 
 And categorized according to the following table:
 
