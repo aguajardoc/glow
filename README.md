@@ -32,6 +32,7 @@ And categorized according to the following table:
 The numbers used for the calculation are based on the **total and updated** counts, not just the solved and participation counts of the original ICPC contest. This is done for two reasons:
 1. Some contest managers do not upload ghost data, making the calculation of a rating impossible.
 2. The number of solves within a contest does not reflect the true difficulty of a problem.
+3. Allows for a problem's difficulty to shift over time.
 
 Note that this distribution is subject to any changes, based on the community's perception of the ranges.
 
