@@ -1,6 +1,6 @@
 // Like gimme, but with a connection to the database to track:
 // 1. If the user has an ongoing problem to solve
-// 2. What problems has the user solved, with their respective point counts
+// 2. What problems the user has solved, with their respective point counts
 // The user MUST solve this problem (or mark it as nogud) to ask for a new one.
 const { gimmeInteraction } = require('./gimme.js');
 const { SlashCommandBuilder } = require('discord.js');
