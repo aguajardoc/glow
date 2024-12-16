@@ -53,14 +53,9 @@ async function validateLanguage(contestId) {
     }
 }
 
-// Function to get possible contests that meet the three conditions.
-async function getPossibleContests() {
-    // Dynamically import 'node-fetch' for use in the function.
-    const fetch = (await import('node-fetch')).default;
+async function addICPCGyms(possibleContests) {
     // Set URL for the list of gyms.
     const gymListURL = 'https://codeforces.com/api/contest.list?gym=true';
-    // Array to return, with all valid contest IDs.
-    let possibleContests = [];
 
     try {
         const response = await fetch(gymListURL);
@@ -89,6 +84,51 @@ async function getPossibleContests() {
     } catch (error) {
         console.error('Error:', error);
     }
+
+    return possibleContests;
+}
+
+async function addICPCNonGyms(possibleContests) {
+    // Set URL for the list of non-gyms.
+    const nonGymListURL = 'https://codeforces.com/api/contest.list?gym=false';
+    try {
+        const response = await fetch(nonGymListURL);
+        if (!response.ok) {
+            console.log('Failed to fetch gym data.');
+            return possibleContests;
+        }
+
+        const data = await response.json();
+
+        for (const contest of data.result) {
+            // Get the type of every contest, and verify that it is an Official ICPC Contest.
+            const contestType = contest.type;
+            const contestName = contest.name;
+            const contestDuration = contest.durationSeconds;
+
+            if (contestType === 'ICPC' && contestName.includes('ICPC') && contestDuration === 18000) {
+                console.log(contest.id);
+                possibleContests.push(contest.id);
+            }
+        }
+    } catch (error) {
+        console.error('Error:', error);
+    }
+
+    return possibleContests;
+}
+
+// Function to get possible contests that meet the three conditions.
+async function getPossibleContests() {
+    // Dynamically import 'node-fetch' for use in the function.
+    const fetch = (await import('node-fetch')).default;
+    
+    // Array to return.
+    let possibleContests = [];
+
+    // Add all valid contest IDs.
+    possibleContests = await addICPCGyms(possibleContests);
+    possibleContests = await addICPCNonGyms(possibleContests);
 
     // Convert the array to a string through JSON before writing to file.
     const content = JSON.stringify(possibleContests);
