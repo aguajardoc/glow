@@ -5,7 +5,7 @@
 // The Codeforces API holds information regarding the first two points, but the third one must be solved differently.
 // In this sense, Franc's language detection capabilities. It's not perfect, but it's a good solution.
 
-// This file is ran through a cron job once a week to maintain contest data up to date.
+// This file is ran once a week through a cron job to maintain contest data up to date.
 
 import { getArrayPossibleGymContests, getArrayPossibleNonGymContests, getLastCheckedGym, getLastCheckedNonGym } from './possible-contests.js';
 
