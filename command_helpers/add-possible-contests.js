@@ -2,11 +2,22 @@
 // 1. The contest is of type "ICPC".
 // 2. The contest is of kind "Official ICPC Contest".
 // 3. It's in English.
-// The Codeforces API holds information regarding the first two points, but the third one is somewhat solved through
-// Franc's language detection capabilities. It's not perfect, but it's a good solution.
+// The Codeforces API holds information regarding the first two points, but the third one must be solved differently.
+// In this sense, Franc's language detection capabilities. It's not perfect, but it's a good solution.
 
-const fs = require('node:fs');
-const path = require('node:path');
+// This file is ran through a cron job once a week to maintain contest data up to date.
+
+import { getArrayPossibleGymContests, getArrayPossibleNonGymContests, getLastCheckedGym, getLastCheckedNonGym } from './possible-contests.js';
+
+import fs from 'fs';
+import path from 'path';
+import { fileURLToPath } from 'url';
+
+const __filename = fileURLToPath(import.meta.url); // get the resolved path to the file
+const __dirname = path.dirname(__filename);
+
+// Required to update contest information.
+const contestsFilePath = path.join(__dirname, 'contests.json');
 
 // Function to validate the language of the contest problems using the Franc library.
 async function validateLanguage(contestId) {
@@ -53,9 +64,15 @@ async function validateLanguage(contestId) {
     }
 }
 
-async function addICPCGyms(possibleContests) {
+async function addICPCGyms() {
+    // Array to return.
+    let possibleContests = [];
+
     // Set URL for the list of gyms.
     const gymListURL = 'https://codeforces.com/api/contest.list?gym=true';
+
+    // Get last checked gym in previous runs.
+    const firstToCheck = getLastCheckedGym() + 1;
 
     try {
         const response = await fetch(gymListURL);
@@ -67,6 +84,11 @@ async function addICPCGyms(possibleContests) {
         const data = await response.json();
 
         for (const contest of data.result) {
+            // Speed-up to avoid rechecking contests.
+            if (contest.id < firstToCheck) {
+                continue;
+            }
+
             // Get the type and kind of every contest, and verify that it is an Official ICPC Contest.
             const contestType = contest.type;
             const contestKind = contest.kind;
@@ -88,9 +110,16 @@ async function addICPCGyms(possibleContests) {
     return possibleContests;
 }
 
-async function addICPCNonGyms(possibleContests) {
+async function addICPCNonGyms() {
+    // Array to return.
+    let possibleContests = [];
+
     // Set URL for the list of non-gyms.
     const nonGymListURL = 'https://codeforces.com/api/contest.list?gym=false';
+    
+    // Get last checked non-gym in previous runs.
+    const firstToCheck = getLastCheckedNonGym() + 1;
+
     try {
         const response = await fetch(nonGymListURL);
         if (!response.ok) {
@@ -101,13 +130,17 @@ async function addICPCNonGyms(possibleContests) {
         const data = await response.json();
 
         for (const contest of data.result) {
+            // Speed-up to avoid rechecking contests.
+            if (contest.id < firstToCheck) {
+                continue;
+            }
             // Get the type of every contest, and verify that it is an Official ICPC Contest.
             const contestType = contest.type;
             const contestName = contest.name;
             const contestDuration = contest.durationSeconds;
 
             if (contestType === 'ICPC' && contestName.includes('ICPC') && contestDuration === 18000) {
-                console.log(contest.id);
+                console.log(contest.id, true);
                 possibleContests.push(contest.id);
             }
         }
@@ -118,32 +151,28 @@ async function addICPCNonGyms(possibleContests) {
     return possibleContests;
 }
 
-// Function to get possible contests that meet the three conditions.
-async function getPossibleContests() {
-    // Dynamically import 'node-fetch' for use in the function.
-    const fetch = (await import('node-fetch')).default;
-    
-    // Array to return.
-    let possibleContests = [];
+// Function to update possible contests with those that meet the three conditions.
+async function updatePossibleContests() {
+    let gymContests = getArrayPossibleGymContests();
+    let nonGymContests = getArrayPossibleNonGymContests();
 
-    // Add all valid contest IDs.
-    possibleContests = await addICPCGyms(possibleContests);
-    possibleContests = await addICPCNonGyms(possibleContests);
+    // Add all new valid contest IDs.
+    gymContests = gymContests.concat(await addICPCGyms());
+    nonGymContests = nonGymContests.concat((await addICPCNonGyms()).sort()); // Sorted to keep increasing order for both arrays.
 
-    // Convert the array to a string through JSON before writing to file.
-    const content = JSON.stringify(possibleContests);
-    const filePath = path.resolve(process.env.HOME || process.env.USERPROFILE, 'Documents/Projects/Github/glow/database/array.txt');
+    // Structure for JSON.
+    const updatedContests = {
+        gymContests,
+        nonGymContests
+    };
 
-    // Write the file.
-    fs.writeFile(filePath, content, (err) => {
-        if (err) {
-            console.error('Error writing file:', err);
-        } else {
-            console.log('File written successfully');
-        }
-    });
-
-    return possibleContests;
+    // Write the updated contests to JSON.
+    try {
+        fs.writeFileSync(contestsFilePath, JSON.stringify(updatedContests, null, 4));
+        console.log('Contests successfully written to contests.json');
+    } catch (error) {
+        console.error('Error writing to JSON file:', error);
+    }
 }
 
-getPossibleContests();
+updatePossibleContests();

@@ -10,13 +10,16 @@
   "license": "ISC",
   "dependencies": {
     "discord.js": "^14.16.2",
+    "express": "^4.21.2",
     "franc": "^6.2.0",
     "franc-min": "^6.2.0",
+    "node-cron": "^3.0.3",
     "node-fetch": "^3.3.2",
     "sequelize": "^6.37.3",
     "sqlite3": "^5.1.7"
   },
   "devDependencies": {
     "eslint": "^9.9.1"
-  }
+  },
+  "keywords": []
 }

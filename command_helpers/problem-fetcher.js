@@ -1,8 +1,10 @@
 // Fetches a problem that matches a given difficulty through Codeforces's API.
-const { getArrayPossibleContests } = require('./possible-contests.js');
+const { getArrayPossibleGymContests, getArrayPossibleNonGymContests } = require('./possible-contests.js');
 
+const MAX_API_CALLS = 3;
+
+// Function that gets a problem's difficulty rating based on percentage of users who have solved it.
 function getDifficulty(ratio) {
-	// Get a problems difficulty rating based on percentage of users who have solved it.
 	/* Expected behavior:
 	
 	Percent solved | Difficulty
@@ -24,6 +26,7 @@ function getDifficulty(ratio) {
 	return difficulty;
 }
 
+// Function that finds a problem based on inputted difficulty.
 function findProblem(contestProblemData, userDifficulty) {
 	// Create an array to stored the number of times a problem was solved.
 	let solved = new Array();
@@ -85,8 +88,7 @@ async function fetchContest(difficulty) {
     const fetch = (await import('node-fetch')).default;
 
     // Fetch the possible contest IDs.
-    const possibleContests = getArrayPossibleContests();
-	console.log(possibleContests);
+    const possibleContests = getArrayPossibleGymContests().concat(getArrayPossibleNonGymContests());
 
     // Loop while we have not found a suitable problem.
     let validProblemFound = false;
@@ -97,14 +99,10 @@ async function fetchContest(difficulty) {
 
 	// Break out if it fails a number of consecutive calls.
 	let communicationAttempts = 0;
-	const MAX_API_CALLS = 3;
 
     while (!validProblemFound) {
 		arrayIdx = Math.floor(Math.random() * possibleContests.length);
         contestId = possibleContests[arrayIdx];
-		console.log(contestId);
-		console.log(arrayIdx);
-		console.log(possibleContests.length);
         contestURL = `https://codeforces.com/api/contest.standings?contestId=${contestId}&showUnofficial=true`;
 
         try {
@@ -122,7 +120,11 @@ async function fetchContest(difficulty) {
                 problemData.contestId = contestId;
                 problemData.contestName = data.result.contest.name;
                 validProblemFound = true;
+				console.log('Match found in', contestId, '!');
             }
+			else {
+				console.log('Matching problem not found in', contestId, ':(');
+			}
         } 
         catch (error) {
             console.error('Error:', error);
