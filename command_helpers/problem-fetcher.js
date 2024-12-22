@@ -9,10 +9,10 @@ function getDifficulty(ratio) {
 	
 	Percent solved | Difficulty
 	---------------------------
-		60 - 100   | 	 1
-		45 - 60    | 	 2
-		33 - 45    | 	 3
-		25 - 33    | 	 4
+		70 - 100   | 	 1
+		50 - 70    | 	 2
+		35 - 50    | 	 3
+		25 - 35    | 	 4
 		20 - 25    |     5
 		15 - 20    | 	 6
 		10 - 15    | 	 7
@@ -20,7 +20,7 @@ function getDifficulty(ratio) {
 		 2 - 5     | 	 9
 		 0 - 2     | 	 10
 	*/
-	const ratingArray = new Array(0.60, 0.45, 0.33, 0.25, 0.20, 0.15, 0.10, 0.05, 0.02, 0);
+	const ratingArray = new Array(0.70, 0.50, 0.35, 0.25, 0.20, 0.15, 0.10, 0.05, 0.02, 0);
 	const difficulty = ratingArray.findIndex(threshold => ratio > threshold) + 1;
 
 	return difficulty;
