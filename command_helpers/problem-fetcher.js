@@ -37,20 +37,29 @@ function findProblem(contestProblemData, userDifficulty) {
 	for (const party of contestProblemData.result.rows) {
 		let problemIndex = 0;
 
-		// Iterate over every problem they solved.
-		for (const problem of party.problemResults) {
-			if (solved.length === problemIndex) {
-				solved.push(0);
-			}
+		// Speed-up: only check for participants with at least one problem solved.
+		if (party.points >= 1) {
+			participantCount++; // Counting participants with no solves deflates solve rate for that contest.
+		
+			// Iterate over every problem they solved.
+			for (const problem of party.problemResults) {
+				if (solved.length === problemIndex) {
+					solved.push(0);
+				}
 
-			// If they solved the problem, add one to the corresponding counter.
-			if (problem.points === 1) {
-				solved[problemIndex]++;
-			}
+				// If they solved the problem, add one to the corresponding counter.
+				if (problem.points === 1) {
+					solved[problemIndex]++;
+				}
 
-			problemIndex++;
+				problemIndex++;
+			}
 		}
-		participantCount++;
+		else {
+			// The API holds the contestants' information in the same order as the scoreboard.
+			// This means that, if someone with 0 points is reached, it is no longer necessary to check further. 
+			break;
+		}
 	}
 
 	// Get difficulty for each problem, while storing problems of that difficulty.
