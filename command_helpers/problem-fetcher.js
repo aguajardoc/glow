@@ -9,10 +9,10 @@ function getDifficulty(ratio) {
 	
 	Percent solved | Difficulty
 	---------------------------
-		70 - 100   | 	 1
-		50 - 70    | 	 2
-		35 - 50    | 	 3
-		25 - 35    | 	 4
+		50 - 100   | 	 1
+		40 - 50    | 	 2
+		30 - 40    | 	 3
+		25 - 30    | 	 4
 		20 - 25    |     5
 		15 - 20    | 	 6
 		10 - 15    | 	 7
@@ -20,7 +20,7 @@ function getDifficulty(ratio) {
 		 2 - 5     | 	 9
 		 0 - 2     | 	 10
 	*/
-	const ratingArray = new Array(0.70, 0.50, 0.35, 0.25, 0.20, 0.15, 0.10, 0.05, 0.02, 0);
+	const ratingArray = new Array(0.50, 0.40, 0.30, 0.25, 0.20, 0.15, 0.10, 0.05, 0.02, 0);
 	const difficulty = ratingArray.findIndex(threshold => ratio > threshold) + 1;
 
 	return difficulty;
@@ -34,15 +34,15 @@ function findProblem(contestProblemData, userDifficulty) {
 	let participantCount = 0;
 
 	// Iterate over every contestant in the contest.
-	for (const party of contestProblemData.result.rows) {
+	for (const contestant of contestProblemData.result.rows) {
 		let problemIndex = 0;
 
 		// Speed-up: only check for participants with at least one problem solved.
-		if (party.points >= 1) {
+		if (contestant.points >= 1) {
 			participantCount++; // Counting participants with no solves deflates solve rate for that contest.
 		
 			// Iterate over every problem they solved.
-			for (const problem of party.problemResults) {
+			for (const problem of contestant.problemResults) {
 				if (solved.length === problemIndex) {
 					solved.push(0);
 				}
@@ -57,8 +57,11 @@ function findProblem(contestProblemData, userDifficulty) {
 		}
 		else {
 			// The API holds the contestants' information in the same order as the scoreboard.
-			// This means that, if someone with 0 points is reached, it is no longer necessary to check further. 
-			break;
+			// The scoreboard shows participants in Practice Mode last.
+			// This means that, if someone in Practice Mode with 0 points is found, there's no need to check further.
+			if (contestant.party.participantType === "PRACTICE") {
+				break;
+			}
 		}
 	}
 
@@ -68,13 +71,15 @@ function findProblem(contestProblemData, userDifficulty) {
 	let rateSolved = new Array(problemCount);
 	let difficultyRatings = new Array(problemCount);
 	let difficultyMatches = new Array();
+	console.log(participantCount);
 	for (let i = 0; i < problemCount; i++) {
 		rateSolved[i] = solved[i] / participantCount;
 		difficultyRatings[i] = getDifficulty(rateSolved[i]);
 		
-		if (getDifficulty(rateSolved[i]) === userDifficulty) {
+		if (difficultyRatings[i] === userDifficulty) {
 			difficultyMatches.push(i);
 		}
+		console.log(i, rateSolved[i], difficultyRatings[i]);
 	}
 
 	// Choose a suitable problem randomly. If none, return -1 as indicative of such a scenario.
