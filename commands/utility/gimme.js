@@ -17,7 +17,7 @@ async function gimmeInteraction(difficulty, interaction) {
 	const problemEmbed = {
 		color: 0x1e1e22,
 		title: `${problemData.chosenProblemLetter}. ${problemData.chosenProblemName}`,
-		url: `https://codeforces.com/gym/${problemData.contestId}/problem/${problemData.chosenProblemLetter}`,
+		url: `https://codeforces.com/${problemData.contestId < 100000 ?'contest' : 'gym'}/${problemData.contestId}/problem/${problemData.chosenProblemLetter}`,
 		description: problemData.contestName,
 		fields: [
 			{
