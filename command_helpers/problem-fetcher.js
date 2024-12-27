@@ -26,8 +26,8 @@ function getDifficulty(ratio) {
 	return difficulty;
 }
 
-// Function that finds a problem based on inputted difficulty.
-function findProblem(contestProblemData, userDifficulty) {
+// Function that finds a problem based on inputted difficulty range.
+function findProblem(contestProblemData, userMinDifficulty, userMaxDifficulty) {
 	// Create an array to stored the number of times a problem was solved.
 	let solved = new Array();
 	
@@ -65,19 +65,18 @@ function findProblem(contestProblemData, userDifficulty) {
 		}
 	}
 
-	// Get difficulty for each problem, while storing problems of that difficulty.
+	// Get difficulty for each problem, while storing problems in the appropriate range.
 	const problemCount = solved.length;
-
 	let rateSolved = new Array(problemCount);
 	let difficultyRatings = new Array(problemCount);
 	let difficultyMatches = new Array();
-	console.log(participantCount);
+
 	for (let i = 0; i < problemCount; i++) {
 		rateSolved[i] = solved[i] / participantCount;
 		difficultyRatings[i] = getDifficulty(rateSolved[i]);
 		
-		if (difficultyRatings[i] === userDifficulty) {
-			difficultyMatches.push(i);
+		if (difficultyRatings[i] >= userMinDifficulty && difficultyRatings[i] <= userMaxDifficulty) {
+			difficultyMatches.push({index : i, difficulty : difficultyRatings[i]});
 		}
 		console.log(i, rateSolved[i], difficultyRatings[i]);
 	}
@@ -87,18 +86,20 @@ function findProblem(contestProblemData, userDifficulty) {
 		return -1;
 	}
 
-	const chosenProblemIndex = difficultyMatches[Math.floor(Math.random() * difficultyMatches.length)];
+	const randomIndex = Math.floor(Math.random() * difficultyMatches.length);
+	const chosenProblemIndex = difficultyMatches[randomIndex].index;
 	const chosenProblemData = contestProblemData.result.problems[chosenProblemIndex];
 
 	// Relevant data needed for the display on a Discord Embed
 	const chosenProblemLetter = chosenProblemData.index;
 	const chosenProblemName = chosenProblemData.name;
+	const chosenProblemDifficulty = difficultyMatches[randomIndex].difficulty;
 	
 
-	return {chosenProblemLetter, chosenProblemName};
+	return {chosenProblemLetter, chosenProblemName, chosenProblemDifficulty};
 }
 
-async function fetchContest(difficulty) {
+async function fetchContest(minimumDifficulty, maximumDifficulty) {
     const fetch = (await import('node-fetch')).default;
 
     // Fetch the possible contest IDs.
@@ -128,7 +129,7 @@ async function fetchContest(difficulty) {
 
             const data = await response.json();
 
-            problemData = findProblem(data, difficulty);
+            problemData = findProblem(data, minimumDifficulty, maximumDifficulty);
 
             if (problemData !== -1) {
                 problemData.contestId = contestId;

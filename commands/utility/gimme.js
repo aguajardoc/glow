@@ -4,8 +4,8 @@ const { fetchContest } = require('../../command_helpers/problem-fetcher');
 const { errorMessage } = require('../../command_helpers/api-error');
 const { SlashCommandBuilder } = require('discord.js');
 
-async function gimmeInteraction(difficulty, interaction) {
-	const problemData = await fetchContest(difficulty);
+async function gimmeInteraction(interaction, minimumDifficulty, maximumDifficulty=minimumDifficulty) {
+	const problemData = await fetchContest(minimumDifficulty, maximumDifficulty);
 
 	// If -1 is returned, an error with the Codeforces API has occurred; inform user.
 	if (problemData === -1) {
@@ -22,7 +22,7 @@ async function gimmeInteraction(difficulty, interaction) {
 		fields: [
 			{
 				name: 'Rating',
-				value: difficulty,
+				value: problemData.difficulty,
 			},
 		]
 	}
@@ -38,20 +38,54 @@ async function gimmeInteraction(difficulty, interaction) {
 module.exports = {
 	data: new SlashCommandBuilder()
 		.setName('gimme')
-		.setDescription('Provides a random problem from an Official ICPC contest, based on chosen difficulty.')
-		.addIntegerOption(option =>
-			option
+		.setDescription('Provides a random problem from an Official ICPC contest, based on an inputted range of difficulty levels.')
+		.addSubcommand(subcommand =>
+			subcommand
 				.setName('difficulty')
-				.setDescription('The problem difficulty (1-10)')
-				.setRequired(true)
-				.setMinValue(1)
-				.setMaxValue(10)
+				.setDescription('Returns a problem based on a single chosen difficulty.')
+				.addIntegerOption(option =>
+					option
+						.setName('difficulty')
+						.setDescription('The problem difficulty (1-10).')
+						.setRequired(true)
+						.setMinValue(1)
+						.setMaxValue(10)
+				)
+		)
+		.addSubcommand(subcommand => 
+			subcommand
+				.setName('range')
+				.setDescription('Returns a problem from a difficulty in the selected range.')
+				.addIntegerOption(option => 
+					option
+						.setName('min')
+						.setDescription('Minimum problem difficulty (1-10)')
+						.setRequired(true)
+						.setMinValue(1)
+						.setMaxValue(10)
+				)	
+				.addIntegerOption(option =>
+					option
+						.setName('max')
+						.setDescription('Maximum problem difficulty (1-10)')
+						.setRequired(true)
+						.setMinValue(interaction.options.getInteger('min'))
+						.setMaxValue(10)
+				)
 		),
 	async execute(interaction) {
 		await interaction.deferReply();
-		// Find and send a problem based on difficulty.
-		const difficulty = interaction.options.getInteger('difficulty');
-		gimmeInteraction(difficulty, interaction);
+
+		if (interaction.subcommand.name === 'difficulty') {
+			// Find and send a problem based on difficulty.
+			const difficulty = interaction.options.getInteger('difficulty');
+			gimmeInteraction(interaction, difficulty);
+		}
+		else if (interaction.subcommand.name === 'range') {
+			const minimumDifficulty = interaction.options.getInteger('min');
+			const maximumDifficulty = interaction.options.getInteger('max');
+			gimmeInteraction(interaction, minimumDifficulty, maximumDifficulty);
+		}
 	},
 	gimmeInteraction,
 };
