@@ -39,60 +39,40 @@ module.exports = {
 	data: new SlashCommandBuilder()
 		.setName('gimme')
 		.setDescription('Provides a random problem from an Official ICPC contest, based on inputted difficulty range.')
-		.addSubcommand(subcommand =>
-			subcommand
-				.setName('difficulty')
-				.setDescription('Returns a problem based on a single chosen difficulty.')
-				.addIntegerOption(option =>
-					option
-						.setName('difficulty')
-						.setDescription('The problem difficulty (1-10).')
-						.setRequired(true)
-						.setMinValue(1)
-						.setMaxValue(10)
-				)
+		.addIntegerOption(option =>
+			option
+				.setName('base_difficulty')
+				.setDescription('The problem difficulty or the range minimum (1-10).')
+				.setRequired(true)
+				.setMinValue(1)
+				.setMaxValue(10)
 		)
-		.addSubcommand(subcommand => 
-			subcommand
-				.setName('range')
-				.setDescription('Returns a problem from a difficulty in the selected range.')
-				.addIntegerOption(option => 
-					option
-						.setName('min')
-						.setDescription('Minimum problem difficulty (1-10)')
-						.setRequired(true)
-						.setMinValue(1)
-						.setMaxValue(10)
-				)	
-				.addIntegerOption(option =>
-					option
-						.setName('max')
-						.setDescription('Maximum problem difficulty (1-10)')
-						.setRequired(true)
-						.setMinValue(1)
-						.setMaxValue(10)
-				)
+		.addIntegerOption(option => 
+			option
+				.setName('max_difficulty')
+				.setDescription('Maximum problem difficulty (1-10)')
+				.setMinValue(1)
+				.setMaxValue(10)
 		),
 	async execute(interaction) {
 		await interaction.deferReply();
 
-		if (interaction.options.getSubcommand() === 'difficulty') {
-			// Find and send a problem based on difficulty.
-			const difficulty = interaction.options.getInteger('difficulty');
-			gimmeInteraction(interaction, difficulty);
-		}
-		else if (interaction.options.getSubcommand() === 'range') {
-			// Find and send a problem based on the difficulty range.
-			const minimumDifficulty = interaction.options.getInteger('min');
-			const maximumDifficulty = interaction.options.getInteger('max');
-			
-			// Ensure range is adequate
-			if (minimumDifficulty > maximumDifficulty) {
-				return interaction.editReply('The minimum difficulty cannot be greater than the maximum difficulty. Please try again.');
-			}
+		// Minimum is always the first parameter.
+		const minimumDifficulty = interaction.options.getInteger('base_difficulty');
 
-			gimmeInteraction(interaction, minimumDifficulty, maximumDifficulty);
+		// Maximum is the second parameter, if and only if it exists.
+		const maximumDifficulty = interaction.options.getInteger('max_difficulty') 
+								? interaction.options.getInteger('max_difficulty') 
+								: interaction.options.getInteger('base_difficulty');
+
+		// Ensure range is adequate.
+		if (minimumDifficulty > maximumDifficulty) {
+			return interaction.editReply(
+				'The minimum difficulty cannot be greater than the maximum difficulty. Please try again.');
 		}
+		
+		// Handle interaction.
+		gimmeInteraction(interaction, minimumDifficulty, maximumDifficulty);
 	},
 	gimmeInteraction,
 };
