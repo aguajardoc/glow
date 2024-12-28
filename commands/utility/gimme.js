@@ -22,7 +22,7 @@ async function gimmeInteraction(interaction, minimumDifficulty, maximumDifficult
 		fields: [
 			{
 				name: 'Rating',
-				value: problemData.difficulty,
+				value: problemData.chosenProblemDifficulty,
 			},
 		]
 	}
@@ -38,7 +38,7 @@ async function gimmeInteraction(interaction, minimumDifficulty, maximumDifficult
 module.exports = {
 	data: new SlashCommandBuilder()
 		.setName('gimme')
-		.setDescription('Provides a random problem from an Official ICPC contest, based on an inputted range of difficulty levels.')
+		.setDescription('Provides a random problem from an Official ICPC contest, based on inputted difficulty range.')
 		.addSubcommand(subcommand =>
 			subcommand
 				.setName('difficulty')
@@ -69,21 +69,28 @@ module.exports = {
 						.setName('max')
 						.setDescription('Maximum problem difficulty (1-10)')
 						.setRequired(true)
-						.setMinValue(interaction.options.getInteger('min'))
+						.setMinValue(1)
 						.setMaxValue(10)
 				)
 		),
 	async execute(interaction) {
 		await interaction.deferReply();
 
-		if (interaction.subcommand.name === 'difficulty') {
+		if (interaction.options.getSubcommand() === 'difficulty') {
 			// Find and send a problem based on difficulty.
 			const difficulty = interaction.options.getInteger('difficulty');
 			gimmeInteraction(interaction, difficulty);
 		}
-		else if (interaction.subcommand.name === 'range') {
+		else if (interaction.options.getSubcommand() === 'range') {
+			// Find and send a problem based on the difficulty range.
 			const minimumDifficulty = interaction.options.getInteger('min');
 			const maximumDifficulty = interaction.options.getInteger('max');
+			
+			// Ensure range is adequate
+			if (minimumDifficulty > maximumDifficulty) {
+				return interaction.editReply('The minimum difficulty cannot be greater than the maximum difficulty. Please try again.');
+			}
+
 			gimmeInteraction(interaction, minimumDifficulty, maximumDifficulty);
 		}
 	},

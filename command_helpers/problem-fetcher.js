@@ -128,9 +128,16 @@ async function fetchContest(minimumDifficulty, maximumDifficulty) {
             }
 
             const data = await response.json();
-
+			
+			// If a match is found, problemData will have five attributes:
+				// chosenProblemLetter: The letter the problem represents in the contest it's in.
+				// chosenProblemName: The problem's name.
+				// chosenProblemDifficulty: The problem's assigned difficulty rating.
+				// contestId: The problem's contest's Codeforces ID.
+				// contestName: The problem's contest's Codeforces name.
             problemData = findProblem(data, minimumDifficulty, maximumDifficulty);
-
+			
+			// If it's -1, a matching problem was not found
             if (problemData !== -1) {
                 problemData.contestId = contestId;
                 problemData.contestName = data.result.contest.name;
