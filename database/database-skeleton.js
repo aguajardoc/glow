@@ -14,6 +14,63 @@ const sequelize = new Sequelize('database', 'user', 'password', {
 	storage: 'database.sqlite',
 });
 
+/* Table that stores user information.
+ * equivalent to: CREATE TABLE users(
+ * idUser INT NOT NULL AUTO_INCREMENT
+ * handle VARCHAR(255) UNIQUE,
+ * idGitGud INT,
+ * idLadder INT,
+ * idVc  INT,
+ *  PRIMARY KEY (idUser),
+    FOREIGN KEY (idGitGud) REFERENCES gitgud_user(idGitGud),
+    FOREIGN KEY (idLadder) REFERENCES ladder_user(idLadder),
+    FOREIGN KEY (idVc) REFERENCES vc_user(idVc)
+ * );
+ */
+const Users = sequelize.define('users', {
+	idUser: {
+		type: DataTypes.INTEGER,
+		autoIncrement: true,
+		primaryKey: true,
+		allowNull: false,
+	},
+	handle: {
+		type: DataTypes.STRING(255),
+		unique: true,
+		allowNull: false,
+	},
+	idGitGud: {
+		type: DataTypes.INTEGER,
+		allowNull: true,
+		references: {
+			model: 'gitgud_user',
+			key: 'idGitGud',
+		},
+		onUpdate: 'CASCADE',
+		onDelete: 'SET NULL',
+	},
+	idLadder: {
+		type: DataTypes.INTEGER,
+		allowNull: true,
+		references: {
+			model: 'ladder_user',
+			key: 'idLadder',
+		},
+		onUpdate: 'CASCADE',
+		onDelete: 'SET NULL',
+	},
+	idVc: {
+		type: DataTypes.INTEGER,
+		allowNull: true,
+		references: {
+			model: 'vc_user',
+			key: 'idVc',
+		},
+		onUpdate: 'CASCADE',
+		onDelete: 'SET NULL',
+	},
+});
+
 
 // When the client is ready, run this code (only once)
 client.once(Events.ClientReady, readyClient => {
