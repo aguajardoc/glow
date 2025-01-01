@@ -16,8 +16,9 @@ const sequelize = new Sequelize('database', 'user', 'password', {
 
 /* Table that stores user information.
  * equivalent to: CREATE TABLE users(
- * idUser INT NOT NULL AUTO_INCREMENT
- * handle VARCHAR(255) UNIQUE,
+ * idUser INT NOT NULL AUTO_INCREMENT,
+ * discordHandle VARCHAR(255) UNIQUE,
+ * codeforcesHandle VARCHAR(255) UNIQUE,
  * idGitGud INT,
  * idLadder INT,
  * idVc  INT,
@@ -34,7 +35,12 @@ const Users = sequelize.define('users', {
 		primaryKey: true,
 		allowNull: false,
 	},
-	handle: {
+	discordHandle: {
+		type: DataTypes.STRING(255),
+		unique: true,
+		allowNull: false,
+	},
+	codeforcesHandle: {
 		type: DataTypes.STRING(255),
 		unique: true,
 		allowNull: false,
