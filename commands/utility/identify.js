@@ -7,10 +7,10 @@ const { SlashCommandBuilder } = require("discord.js");
 // This unlocks every other feature, except for gimme, as it does not require this information.
 module.exports = {
     data: new SlashCommandBuilder()
-        .setName('ping')
-        .setDescription('Replies with Pong!'),
+        .setName('identify')
+        .setDescription('Links a user to their Codeforces Handle'),
     async execute(interaction) {
-        await interaction.reply('Pong!')
+        await interaction.reply('Submit a compilation error to...')
     },
 
 }
