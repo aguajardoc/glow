@@ -23,6 +23,12 @@ async function identify(codeforcesHandle) {
 			// This range of difficulties ensures there are no collisions in the submissions.
 			// This is the way the bot will know that the user has access to their account.
     */
+
+	// Codeforces rank colors, in ascending order of the rank they represent:
+	// (Newbie, Pupil, Specialist, Expert, Candidate Master, 
+	// {Master, International Master}, 
+	// {Grandmaster, International Grandmaster, Legendary Grandmaster})
+	const rankColors = [0x808080, 0x008000, 0x03a89e, 0x0000ff, 0xaa00aa, 0xff8c00, 0xff0000];
 	
 	// Create embed based on the user's information.
 	identificationEmbed = {
@@ -30,12 +36,6 @@ async function identify(codeforcesHandle) {
 		title: `${problemData.chosenProblemLetter}. ${problemData.chosenProblemName}`,
 		url: `https://codeforces.com/${problemData.contestId < 100000 ?'contest' : 'gym'}/${problemData.contestId}/problem/${problemData.chosenProblemLetter}`,
 		description: `Handle for ${interaction.user.username} successfully set to (handle, with url to Codeforces)`,
-		fields: [
-			{
-				name: 'Rating',
-				value: problemData.chosenProblemDifficulty,
-			},
-		]
 	}
 
 	// Send it.
