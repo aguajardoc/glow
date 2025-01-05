@@ -99,7 +99,7 @@ function findProblem(contestProblemData, userMinDifficulty, userMaxDifficulty) {
 	return {chosenProblemLetter, chosenProblemName, chosenProblemDifficulty};
 }
 
-async function fetchContest(minimumDifficulty, maximumDifficulty) {
+async function fetchContest(minimumDifficulty, maximumDifficulty=minimumDifficulty) {
     const fetch = (await import('node-fetch')).default;
 
     // Fetch the possible contest IDs.
