@@ -108,6 +108,8 @@ async function identify(codeforcesHandle) {
 	}
 	else if (compilationErrorSubmitted === 0) {
 		// Give the user a message to prompt them to try again 
+		identificationEmbed.description = 	`Sorry ${interaction.user.username}, can you try 
+											again? 	The identification process needs you to submit a compilation error to this problem!`;
 	}
 	else if (compilationErrorSubmitted === 1){
 
