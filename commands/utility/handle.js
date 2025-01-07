@@ -102,7 +102,14 @@ async function identify(codeforcesHandle) {
 
 		const compilationErrorSubmitted = await verifyCompileError(codeforcesHandle);
 
-
+	if (compilationErrorSubmitted === -1) {
+		errorMessage(interaction);
+		return;
+	}
+	else if (compilationErrorSubmitted === 0) {
+		// Give the user a message to prompt them to try again 
+	}
+	else if (compilationErrorSubmitted === 1){
 
 
 		// Codeforces rank colors, in ascending order of the rank they represent:
@@ -126,6 +133,7 @@ async function identify(codeforcesHandle) {
 			content: `Challenge problem for ${interaction.user.username}`,
 			embeds: [problemEmbed]
 		});
+	}
 	}
 }
 
