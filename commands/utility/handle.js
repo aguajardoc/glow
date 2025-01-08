@@ -23,7 +23,7 @@ async function verifyCompileError(codeforcesHandle, contestId, contestProblemInd
 			if (submission.problem.contestId = contestId &&
 				submission.problem.index === contestProblemIndex &&
 				submission.verdict === 'COMPILATION_ERROR') {
-					foundCompileError = 1;
+				foundCompileError = 1;
 			}
 		}
 
@@ -102,34 +102,34 @@ async function identify(codeforcesHandle) {
 
 		const compilationErrorSubmitted = await verifyCompileError(codeforcesHandle);
 
-	if (compilationErrorSubmitted === -1) {
-		errorMessage(interaction);
-		return;
-	}
-	else if (compilationErrorSubmitted === 0) {
-		// Give the user a message to prompt them to try again 
-		identificationEmbed.description = 	`Sorry ${interaction.user.username}, can you try 
-											again? 	The identification process needs you to submit a compilation error to this problem!`;
-	}
-	else if (compilationErrorSubmitted === 1){
-
-
-		// Codeforces rank colors, in ascending order of the rank they represent:
-		// (Newbie, Pupil, Specialist, Expert, Candidate Master, 
-		// {Master, International Master}, 
-		// {Grandmaster, International Grandmaster, Legendary Grandmaster})
-		const rankColors = [0x808080, 0x008000, 0x03a89e, 0x0000ff, 0xaa00aa, 0xff8c00, 0xff0000];
-
-		let userRank; // TODO : define this
-
-		// Create embed based on the user's information.
-		identificationEmbed = {
-			color: rankColors[userRank], // TODO: make this color congruent to their Codeforces rank.
-			title: `${problemData.chosenProblemLetter}. ${problemData.chosenProblemName}`,
-			url: `https://codeforces.com/${problemData.contestId < 100000 ? 'contest' : 'gym'}/${problemData.contestId}/problem/${problemData.chosenProblemLetter}`,
-			description: `Handle for ${interaction.user.username} successfully set to (handle, with url to Codeforces)`,
+		if (compilationErrorSubmitted === -1) {
+			errorMessage(interaction);
+			return;
 		}
-	}
+		else if (compilationErrorSubmitted === 0) {
+			// Give the user a message to prompt them to try again 
+			identificationEmbed.description = `Sorry ${interaction.user.username}, can you try 
+											again? 	The identification process needs you to submit a compilation error to this problem!`;
+		}
+		else if (compilationErrorSubmitted === 1) {
+
+
+			// Codeforces rank colors, in ascending order of the rank they represent:
+			// (Newbie, Pupil, Specialist, Expert, Candidate Master, 
+			// {Master, International Master}, 
+			// {Grandmaster, International Grandmaster, Legendary Grandmaster})
+			const rankColors = [0x808080, 0x008000, 0x03a89e, 0x0000ff, 0xaa00aa, 0xff8c00, 0xff0000];
+
+			let userRank; // TODO : define this
+
+			// Create embed based on the user's information.
+			identificationEmbed = {
+				color: rankColors[userRank], // TODO: make this color congruent to their Codeforces rank.
+				title: `${problemData.chosenProblemLetter}. ${problemData.chosenProblemName}`,
+				url: `https://codeforces.com/${problemData.contestId < 100000 ? 'contest' : 'gym'}/${problemData.contestId}/problem/${problemData.chosenProblemLetter}`,
+				description: `Handle for ${interaction.user.username} successfully set to (handle, with url to Codeforces)`,
+			}
+		}
 	}
 }
 
