@@ -57,13 +57,15 @@ async function identify(codeforcesHandle) {
 	let identificationEmbed = {
 		color: 0x1e1e22
 	}
-	// TODO: Check if user is already identified.
-	/*    
+	// Check if user is already identified.
+	// TODO: Ensure its functioning.
+	const user = await User.findOne({ where: { discordHandle: `${interaction.user.username}`}});
+	if (user !== null) {
 		// If so, send the following message:
-	    
-		identificationEmbed.description = `${interaction.user.username}, you cannot identify when your handle is already set. Ask an Admin or Moderator if you wish to change it.`;
-		});
-	*/
+		identificationEmbed.description = 	`${interaction.user.username}, you cannot identify when 
+											your handle is already set. Ask an Admin or Moderator if 
+											you wish to change it.`;
+	};
 	// Else, link the Discord user to their Codeforces handle.
 	// If their handle is not found in Codeforces, send the following message:
 	const handleExists = await verifyHandle(codeforcesHandle);
@@ -73,7 +75,7 @@ async function identify(codeforcesHandle) {
 		return;
 	}
 	else if (handleExists === 0) {
-		identificationEmbed.description = `Codeforces handle for ${interaction.user.username} 
+		identificationEmbed.description = 	`Codeforces handle for ${interaction.user.username} 
 											not found in database. Use ;handle identify 
 											<cfhandle> (where <cfhandle> needs to be replaced 
 											with your codeforces handle, e.g. ;handle identify 
