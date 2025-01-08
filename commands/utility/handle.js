@@ -129,12 +129,6 @@ async function identify(codeforcesHandle) {
 			url: `https://codeforces.com/${problemData.contestId < 100000 ? 'contest' : 'gym'}/${problemData.contestId}/problem/${problemData.chosenProblemLetter}`,
 			description: `Handle for ${interaction.user.username} successfully set to (handle, with url to Codeforces)`,
 		}
-
-		// Send it.
-		await interaction.editReply({
-			content: `Challenge problem for ${interaction.user.username}`,
-			embeds: [problemEmbed]
-		});
 	}
 	}
 }
