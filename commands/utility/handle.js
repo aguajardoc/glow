@@ -68,20 +68,20 @@ async function identify(codeforcesHandle) {
 	};
 	// Else, link the Discord user to their Codeforces handle.
 	// If their handle is not found in Codeforces, send the following message:
-	const handleExists = await verifyHandle(codeforcesHandle);
+	const handleNotExist = await verifyHandle(codeforcesHandle);
 
-	if (handleExists === -1) {
+	if (handleNotExist === -1) {
 		errorMessage(interaction);
 		return;
 	}
-	else if (handleExists === 0) {
+	else if (handleNotExist === 0) {
 		identificationEmbed.description = 	`Codeforces handle for ${interaction.user.username} 
 											not found in database. Use ;handle identify 
 											<cfhandle> (where <cfhandle> needs to be replaced 
 											with your codeforces handle, e.g. ;handle identify 
 											tourist) to add yourself to the database`;
 	}
-	else if (handleExists === 1) {
+	else if (handleNotExist === 1) {
 
 		// Else, ask for their submission of a compilation error to a difficulty 9 or 10 problem.
 		// This range of difficulties ensures there are no collisions in the submissions.
