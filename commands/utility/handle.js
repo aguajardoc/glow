@@ -44,8 +44,20 @@ async function verifyHandle(codeforcesHandle) {
 		if (!response.ok) {
 			return 0;
 		}
-		return 1;
+		
+		// If data exists, user handle exists.
+		// User info is also fetched to avoid multiple API calls later.
+		const data = await response.json();
+		let userInfo;
 
+		// The 'handles' parameter accepts multiple handles, so it must be iterated through.
+		// Still, in this case, it'll only contain one handle.
+		for (const user of data.result) {
+			userInfo = user;
+		}
+
+		// Return one, as well as the user's info.
+		return [1, userInfo];
 	}
 	catch (error) {
 		console.error('Error:', error);
@@ -68,27 +80,27 @@ async function identify(codeforcesHandle) {
 	};
 	// Else, link the Discord user to their Codeforces handle.
 	// If their handle is not found in Codeforces, send the following message:
-	const handleNotExist = await verifyHandle(codeforcesHandle);
+	const handleUnused = await verifyHandle(codeforcesHandle);
 
-	if (handleNotExist === -1) {
+	if (handleUnused === -1) {
 		errorMessage(interaction);
 		return;
 	}
-	else if (handleNotExist === 0) {
+	else if (handleUnused === 0) {
 		identificationEmbed.description = 	`Codeforces handle for ${interaction.user.username} 
 											not found in database. Use ;handle identify 
 											<cfhandle> (where <cfhandle> needs to be replaced 
 											with your codeforces handle, e.g. ;handle identify 
 											tourist) to add yourself to the database`;
 	}
-	else if (handleNotExist === 1) {
-
+	else {
+		const userInfo = handleUnused[1];
 		// Else, ask for their submission of a compilation error to a difficulty 9 or 10 problem.
 		// This range of difficulties ensures there are no collisions in the submissions.
 		// This is the way the bot will know that the user has access to their account.
 		const problemData = await fetchContest(9, 10);
 
-		// If -1 is returned, an error with the Codeforces API has occurred; inform user.
+		// If -1 is returned, an error with the Codeforces API has occurred; inform user to retry later.
 		if (problemData === -1) {
 			errorMessage(interaction);
 			return;
@@ -122,7 +134,8 @@ async function identify(codeforcesHandle) {
 			// {Grandmaster, International Grandmaster, Legendary Grandmaster})
 			const rankColors = [0x808080, 0x008000, 0x03a89e, 0x0000ff, 0xaa00aa, 0xff8c00, 0xff0000];
 
-			let userRank; // TODO : define this
+			// Fetch user's Codeforces rank.
+			const userRank = userInfo.rank;
 
 			// Create embed based on the user's information.
 			identificationEmbed = {
