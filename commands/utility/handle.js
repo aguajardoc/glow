@@ -66,15 +66,16 @@ async function verifyHandle(codeforcesHandle) {
 }
 
 async function identify(codeforcesHandle) {
+	const userDiscordHandle = interaction.user.username;
 	let identificationEmbed = {
 		color: 0x1e1e22
 	}
 	// Check if user is already identified.
 	// TODO: Ensure its functioning.
-	const user = await User.findOne({ where: { discordHandle: `${interaction.user.username}`}});
+	const user = await User.findOne({ where: { discordHandle: `${discordHandle}`}});
 	if (user !== null) {
 		// If so, send the following message:
-		identificationEmbed.description = 	`${interaction.user.username}, you cannot identify when 
+		identificationEmbed.description = 	`${discordHandle}, you cannot identify when 
 											your handle is already set. Ask an Admin or Moderator if 
 											you wish to change it.`;
 	};
@@ -87,7 +88,7 @@ async function identify(codeforcesHandle) {
 		return;
 	}
 	else if (handleUnused === 0) {
-		identificationEmbed.description = 	`Codeforces handle for ${interaction.user.username} 
+		identificationEmbed.description = 	`Codeforces handle for ${discordHandle} 
 											not found in database. Use ;handle identify 
 											<cfhandle> (where <cfhandle> needs to be replaced 
 											with your codeforces handle, e.g. ;handle identify 
@@ -122,7 +123,7 @@ async function identify(codeforcesHandle) {
 		}
 		else if (compilationErrorSubmitted === 0) {
 			// Give the user a message to prompt them to try again 
-			identificationEmbed.description = `Sorry ${interaction.user.username}, can you try 
+			identificationEmbed.description = `Sorry ${discordHandle}, can you try 
 											again? 	The identification process needs you to submit a compilation error to this problem!`;
 		}
 		else if (compilationErrorSubmitted === 1) {
@@ -138,7 +139,7 @@ async function identify(codeforcesHandle) {
 			// Update database
 			// id is on autoincrement
 			// discordHandle
-			const userDiscordHandle = interaction.user.username;
+			
 			// codeforcesHandle
 			const userCodeforcesHandle = codeforcesHandle;
 			// Rest of the fields are null by default.
@@ -148,7 +149,7 @@ async function identify(codeforcesHandle) {
 				color: rankColors[userRank], // TODO: make this color congruent to their Codeforces rank.
 				title: `${problemData.chosenProblemLetter}. ${problemData.chosenProblemName}`,
 				url: `https://codeforces.com/${problemData.contestId < 100000 ? 'contest' : 'gym'}/${problemData.contestId}/problem/${problemData.chosenProblemLetter}`,
-				description: `Handle for ${interaction.user.username} successfully set to (handle, with url to Codeforces)`,
+				description: `Handle for ${discordHandle} successfully set to (handle, with url to Codeforces)`,
 			}
 		}
 	}
