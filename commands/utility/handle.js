@@ -126,8 +126,6 @@ async function identify(codeforcesHandle) {
 											again? 	The identification process needs you to submit a compilation error to this problem!`;
 		}
 		else if (compilationErrorSubmitted === 1) {
-
-
 			// Codeforces rank colors, in ascending order of the rank they represent:
 			// (Newbie, Pupil, Specialist, Expert, Candidate Master, 
 			// {Master, International Master}, 
@@ -136,6 +134,14 @@ async function identify(codeforcesHandle) {
 
 			// Fetch user's Codeforces rank.
 			const userRank = userInfo.rank;
+
+			// Update database
+			// id is on autoincrement
+			// discordHandle
+			const userDiscordHandle = interaction.user.username;
+			// codeforcesHandle
+			const userCodeforcesHandle = codeforcesHandle;
+			// Rest of the fields are null by default.
 
 			// Create embed based on the user's information.
 			identificationEmbed = {
