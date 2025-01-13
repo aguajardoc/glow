@@ -1,2 +1,4 @@
-// Suggests a random gym as a virtual contest.
-// This way, users can look at their performance based on other users.
+// Suggests a random gym as a virtual contest, yet does not actually track info.
+// Give priority to
+// 1. Most recent gyms
+// 2. Gyms where the user has no solves
