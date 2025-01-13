@@ -65,16 +65,6 @@ const Users = sequelize.define('users', {
 		onUpdate: 'CASCADE',
 		onDelete: 'SET NULL',
 	},
-	idVc: {
-		type: DataTypes.INTEGER,
-		allowNull: true,
-		references: {
-			model: 'vc_user',
-			key: 'idVc',
-		},
-		onUpdate: 'CASCADE',
-		onDelete: 'SET NULL',
-	},
 });
 
 
