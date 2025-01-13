@@ -2,3 +2,5 @@
 // Give priority to
 // 1. Most recent gyms
 // 2. Gyms where the user has no solves
+
+const { fetchContest } = require("../../command_helpers/problem-fetcher");
