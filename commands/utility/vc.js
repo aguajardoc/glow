@@ -33,7 +33,7 @@ for (const i = 0; i < totalLength; i++) {
         indexGyms++;
     }
 
-    let contestURL;
+    const contestURL = `https://codeforces.com/api/contest.status?contestId=${contest}&handle=${codeforcesHandle}&count=1`
     // Check contest, to see if user has made ANY submissions to it.
 
     // If not, edit the response to include it.
