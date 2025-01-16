@@ -5,6 +5,10 @@
 
 const { fetchContest } = require("../../command_helpers/problem-fetcher");
 
+function addPage() {
+
+}
+
 // Fetch the possible contest IDs.
 const possibleGyms = getArrayPossibleGymContests();
 const possibleNonGyms = getArrayPossibleNonGymContests();
@@ -35,9 +39,14 @@ for (const i = 0; i < totalLength; i++) {
 
     const contestURL = `https://codeforces.com/api/contest.status?contestId=${contest}&handle=${codeforcesHandle}&count=1`
     // Check contest, to see if user has made ANY submissions to it.
-
+        
     // If not, edit the response to include it.
+        //TODO: status is OK, but result is empty...
+    // Continue iterating and adding contest for the user to solve.
 
-    // Else, continue iterating
+    // If count is a multiple of 5, plus one, create a new page in the bot interaction.
+
+    // Method to make a new page and to allow user to traverse through them..
+    addPage();
 }
-// Allow the user to keep interacting with the response for the next 5 minutes, so that they choose their contest.
+// Allow the user to keep interacting with the response for the next 5 minutes, so that have time to see and choose their contest.
