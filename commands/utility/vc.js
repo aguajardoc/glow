@@ -42,11 +42,31 @@ for (const i = 0; i < totalLength; i++) {
         
     // If not, edit the response to include it.
         //TODO: status is OK, but result is empty...
+        try {
+            const response = await fetch(contestURL);
+            if (!response.ok) {
+                console.log(`Failed to fetch contest data for ID: ${contestId}`);
+				communicationAttempts++;
+            }
+
+            const data = await response.json();
+			
+            if (!data) {
+                console.log('Compatible contest found!');
+            }
+            else {
+                console.log('Not a compatible contest.');
+            }
+        } 
+        catch (error) {
+            console.error('Error:', error);
+			communicationAttempts++;
+        }
     // Continue iterating and adding contest for the user to solve.
 
     // If count is a multiple of 5, plus one, create a new page in the bot interaction.
 
-    // Method to make a new page and to allow user to traverse through them..
+    // Method to make a new page and to allow user to traverse through them.
     addPage();
 }
 // Allow the user to keep interacting with the response for the next 5 minutes, so that have time to see and choose their contest.
