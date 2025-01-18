@@ -36,7 +36,7 @@ The numbers used for the calculation are based on the **total and updated** coun
 
 Note that this distribution is subject to any changes, based on the community's perception of the ranges.
 
-Finally, it is important to note that not all problems within a difficulty bracket are created equally. A 2 in an ICPC World Finals contest *will* be way harder than a 2 at a sub-regional contest
+Finally, it is important to note that not all problems within a difficulty bracket are created equally. A 2 in an ICPC World Finals contest *will* be way harder than a 2 at a sub-regional contest. True equality within a difficulty level cannot happen.
 
 ## Current State of Development
 This project is a work in progress. The main functionality is finished, but many, many things are still missing for this to be considered a complete package.
