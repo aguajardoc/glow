@@ -5,6 +5,10 @@
 
 const { fetchContest } = require("../../command_helpers/problem-fetcher");
 
+function addToPage(contestId) {
+
+}
+
 function addPage() {
 
 }
@@ -25,19 +29,19 @@ let indexNonGyms = 0;
 // A factor to "move" the indices in a proportional manner over both lists.
 const conversionFactor = possibleGyms.length() / possibleNonGyms.length();
 
-// Iterate the lists
+// Iterate over the lists
 for (const i = 0; i < totalLength; i++) {
-    let contest;
+    let contestId;
     if (round(possibleNonGyms * conversionFactor) < i) {
-        contest = possibleNonGyms[indexNonGyms];
+        contestId = possibleNonGyms[indexNonGyms];
         indexNonGyms++;
     }
     else {
-        contest = possibleGyms[indexGyms];
+        contestId = possibleGyms[indexGyms];
         indexGyms++;
     }
 
-    const contestURL = `https://codeforces.com/api/contest.status?contestId=${contest}&handle=${codeforcesHandle}&count=1`
+    const contestURL = `https://codeforces.com/api/contest.status?contestId=${contestId}&handle=${codeforcesHandle}&count=1`
     // Check contest, to see if user has made ANY submissions to it.
         
     // If not, edit the response to include it.
@@ -53,8 +57,11 @@ for (const i = 0; i < totalLength; i++) {
 			
             if (!data) {
                 console.log('Compatible contest found!');
+                // TODO: add to current page.
+                addToPage(contestId);
             }
             else {
+                // Don't do anything.
                 console.log('Not a compatible contest.');
             }
         } 
