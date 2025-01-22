@@ -54,4 +54,7 @@ The user MUST solve this problem (or mark it as nogud) to ask for a new one.
 A different mode of training: allows a user to train progressively harder problems starting from a set difficulty. For example, a user can start at difficulty 3, solve the problem, and go up to 4,and so on until they feel like stopping or they fail to complete a problem within a time limit. Keep statistics like time taken, problems solved, and reached difficulty for self-comparison and leaderboards.
 
 ### 4. Region filters
-Make practice more focused in what your region has offerred in the past!
+Make practice more focused in what your region has offered in the past!
+
+### 5. Virtual Contest suggestions
+Practice a contest from which you have not attempted any problems before, offering a completely new and blind experience —just like in the ICPC!
