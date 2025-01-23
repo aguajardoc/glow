@@ -49,6 +49,7 @@ b. 2. What problems the user has solved, with their respective point counts
 The user MUST solve this problem (or mark it as nogud) to ask for a new one.
 
 ### 2. A server-wide leaderboard for gitgud users
+Coupled with image generation, for the aesthetics.
 
 ### 3. Ladder mode
 A different mode of training: allows a user to train progressively harder problems starting from a set difficulty. For example, a user can start at difficulty 3, solve the problem, and go up to 4,and so on until they feel like stopping or they fail to complete a problem within a time limit. Keep statistics like time taken, problems solved, and reached difficulty for self-comparison and leaderboards.
