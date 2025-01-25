@@ -45,7 +45,7 @@ for (const i = 0; i < totalLength; i++) {
     // Check contest, to see if user has made ANY submissions to it.
         
     // If not, edit the response to include it.
-        //TODO: status is OK, but result is empty...
+        //TODO: status is OK, but result is empty when contest is good.
         try {
             const response = await fetch(contestURL);
             if (!response.ok) {
