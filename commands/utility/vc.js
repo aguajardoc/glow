@@ -69,11 +69,12 @@ for (const i = 0; i < totalLength; i++) {
             console.error('Error:', error);
 			communicationAttempts++;
         }
-    // Continue iterating and adding contest for the user to solve.
+    // Continue iterating and adding contests for the user to solve.
 
     // If count is a multiple of 5, plus one, create a new page in the bot interaction.
-
-    // Method to make a new page and to allow user to traverse through them.
-    addPage();
+    if (i > 5 && i % 5 == 1) {
+        // Function to make a new page and to allow user to traverse through them.
+        addPage();
+    }
 }
 // Allow the user to keep interacting with the response for the next 5 minutes, so that have time to see and choose their contest.
