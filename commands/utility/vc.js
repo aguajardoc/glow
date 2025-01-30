@@ -61,7 +61,7 @@ for (const i = 0; i < totalLength; i++) {
                 addToPage(contestId);
             }
             else {
-                // Don't do anything.
+                // Don't do anything that affects the user if it is not compatible.
                 console.log('Not a compatible contest.');
             }
         } 
