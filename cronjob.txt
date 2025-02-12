@@ -1,0 +1,1 @@
+0 12 * * 1 node add-possible-contests.js /home/Documents/GitHub/glow/command_helpers
