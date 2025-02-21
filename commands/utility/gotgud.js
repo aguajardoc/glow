@@ -1,1 +1,0 @@
-// Finalizes a gitgud session, adjusting database information accordingly.
