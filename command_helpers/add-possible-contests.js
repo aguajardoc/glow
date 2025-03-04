@@ -12,6 +12,7 @@ import { getArrayPossibleGymContests, getArrayPossibleNonGymContests, getLastChe
 import fs from 'fs';
 import path from 'path';
 import { fileURLToPath } from 'url';
+import { CronJob } from 'cron';
 
 const __filename = fileURLToPath(import.meta.url); // get the resolved path to the file
 const __dirname = path.dirname(__filename);
@@ -175,4 +176,13 @@ async function updatePossibleContests() {
     }
 }
 
+// Run it immediately on startup
 updatePossibleContests();
+
+// Declare the cron job
+const job = new CronJob('0 18 * * 1', async function() {
+    // Just calls the update function every Monday at 6 pm UTC 
+    await updatePossibleContests(); 
+}, null, true, 'UTC')
+
+job.start();
