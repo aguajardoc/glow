@@ -18,13 +18,13 @@ And categorized according to the following table:
 
 | Percent Solved | Difficulty |
 |----------------|------------|
-| 50 - 100       | 1          |
-| 40 - 50        | 2          |
-| 30 - 40        | 3          |
-| 25 - 30        | 4          |
-| 20 - 25        | 5          |
-| 15 - 20        | 6          |
-| 10 - 15        | 7          |
+| 75 - 100       | 1          |
+| 60 - 75        | 2          |
+| 50 - 60        | 3          |
+| 40 - 50        | 4          |
+| 30 - 40        | 5          |
+| 20 - 30        | 6          |
+| 10 - 20        | 7          |
 | 5 - 10         | 8          |
 | 2 - 5          | 9          |
 | 0 - 2          | 10         |
@@ -59,3 +59,6 @@ Make practice more focused in what your region has offered in the past!
 
 ### 5. Virtual Contest suggestions
 Practice a contest from which you have not attempted any problems before, offering a completely new and blind experience —just like in the ICPC!
+
+### 6. Duels
+Match up against other server members!
