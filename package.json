@@ -9,6 +9,7 @@
   "author": "Alejandro Guajardo",
   "license": "ISC",
   "dependencies": {
+    "cron": "^4.1.0",
     "discord.js": "^14.16.2",
     "express": "^4.21.2",
     "franc": "^6.2.0",
